@@ -17,6 +17,14 @@ class FilesViewState extends State<FilesView>{
   }
 
   @override
+  void dispose(){
+    files['videos'].forEach((file){
+      (file as Vid).vid.dispose();
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +43,7 @@ class FilesViewState extends State<FilesView>{
             onChanged: (value){
               print(value);
               setState(() {
-                              if(value=='Images'){
+              if(value=='Images'){
                 content = 'images';
               }
               else if(value=='Videos'){
@@ -49,14 +57,16 @@ class FilesViewState extends State<FilesView>{
       ),
       body: GridView.count(
         crossAxisCount: 3,
-        children: List.generate(files!=null?1:0,(index){
+        children: List.generate(files!=null?files[content].length:0,(index){
           return InkWell(
             onTap: (){
               _showFile(files[content][index]);
             },
             child:Card(
-              child: (content=='images')?(files[content][index] as Img).img:VideoPlayer((files[content][index] as Vid).vid
-              ..play(),),
+              child: Container(
+                  child:(content=='images')?(files[content][index] as Img).img:VideoPlayer((files[content][index] as Vid).vid,),
+                  padding: EdgeInsets.only(top:18.0,bottom:18.0),
+              ),
             ),
           );
         },
@@ -76,9 +86,18 @@ class FilesView extends StatefulWidget{
 class FileViewState extends State<FileView>{
   final File _currentFile;
   FileViewState(this._currentFile);
+
   @override
   Widget build(BuildContext context){
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: (){
+        print('Back button was pressed!');
+        if(_currentFile.type=='video'){
+          (_currentFile as Vid).vid.pause();
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
           appBar: AppBar(
             title: Text(_currentFile.name),
           ),
@@ -87,7 +106,8 @@ class FileViewState extends State<FileView>{
             children: <Widget>[
               (_currentFile.type=='image')?(_currentFile as Img).img: AspectRatio(
                 aspectRatio: 16/9,
-                child: VideoPlayer((_currentFile as Vid).vid)),
+                child: VideoPlayer((_currentFile as Vid).vid
+                ..play())),
               ListTile(
                 title: Text('Name: '),
               ),
@@ -96,7 +116,8 @@ class FileViewState extends State<FileView>{
               ),
             ],
           ),
-        );
+        ),
+    );
   }
 }
 
