@@ -19,6 +19,7 @@ class FilesViewState extends State<FilesView>{
   @override
   void dispose(){
     files['videos'].forEach((file){
+      print('Disposing ${(file as Vid).name}');
       (file as Vid).vid.dispose();
     });
     super.dispose();
