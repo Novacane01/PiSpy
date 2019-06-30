@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'main.dart' show secondaryColor;
+import 'package:pi_spy/home_view.dart';
+import 'package:pi_spy/main.dart' show secondaryColor;
 
 class RegisterViewState extends State<RegisterView>{
   FocusNode _focus = FocusNode();

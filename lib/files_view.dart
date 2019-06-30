@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:video_player/video_player.dart';
-import 'globals.dart';
+import 'package:pi_spy/file.dart';
 
 //VIEWING ALL FILES
 

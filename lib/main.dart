@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pi_spy/files.dart';
-import 'package:pi_spy/home.dart';
-import 'package:pi_spy/register.dart';
-import 'globals.dart';
+import 'package:pi_spy/files_view.dart';
+import 'package:pi_spy/home_view.dart';
+import 'package:pi_spy/register_view.dart';
+import 'package:pi_spy/file.dart';
 
 
 final primaryColor = Color(0xFFC41949);
@@ -13,7 +13,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    files = Map(); //COME BACK HERE AND TIDY UP
+    files = Map(); //TODO: COME BACK HERE AND TIDY UP
     print("Creating Material App");
     return MaterialApp(
       title: 'Pi-Spy',

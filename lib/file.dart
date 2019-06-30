@@ -11,9 +11,7 @@ List<Future<http.Response>> _getFiles(){
   return [http.get('http://192.168.0.26:7070/camera/images'),http.get('http://192.168.0.26:7070/camera/videos')];
 }
 
-Future<http.Response> getCameraStatus(){
-  return http.get('http://192.168.0.26:7070/status');
-}
+
 
 Future<http.Response> deleteFile(String file){
   return http.delete('http://192.168.0.26:7070/camera/files$file');
