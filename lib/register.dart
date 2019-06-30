@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'menu.dart';
-import 'main.dart' show primaryColor,secondaryColor;
+import 'home.dart';
+import 'main.dart' show secondaryColor;
 
 class RegisterViewState extends State<RegisterView>{
   FocusNode _focus = FocusNode();
@@ -23,7 +23,7 @@ class RegisterViewState extends State<RegisterView>{
     if(_formKey.currentState.validate()){
       Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
         builder: (context){
-          return MenuView();
+          return HomeView();
         }
       ));
     }
