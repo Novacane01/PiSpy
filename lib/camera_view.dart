@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:pi_spy/file.dart';
 
 class CameraState extends State<Camera>{
   bool _isCameraEnabled = false;
@@ -15,9 +16,6 @@ class CameraState extends State<Camera>{
     });
   }
 
-  Future<http.Response> getCameraStatus(){
-  return http.get('http://192.168.0.26:7070/status');
-}
   @override
   Widget build(BuildContext context){
     print('Creating ListView');
@@ -43,8 +41,8 @@ class CameraState extends State<Camera>{
             onChanged: (bool newValue){
               setState(() {
                 _isCameraEnabled = newValue;
+                _updateCameraStatus();
               });
-              _updateCameraStatus();
             },
             activeColor: Colors.lightBlueAccent,
           ),
