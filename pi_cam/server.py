@@ -53,7 +53,7 @@ def get_images():
 			if file.endswith('.jpg'):
 				images.append(file)
 	print(images)
-	return app.response_class(response=json.dumps(images),status=200,mimetype='application/json')
+	return app.response_class(response=json.dumps(images,sort_keys=True),status=200,mimetype='application/json')
 
 @app.route('/camera/videos',methods=['GET'])
 def get_videos():
@@ -62,7 +62,7 @@ def get_videos():
 		for file in files:
 			if file.endswith('.mp4'):
 				videos.append(file)
-	return app.response_class(response=json.dumps(videos),status=200,mimetype='application/json')
+	return app.response_class(response=json.dumps(videos,sort_keys=True),status=200,mimetype='application/json')
 
 
 @app.route('/camera/files',methods=['DELETE'])
@@ -73,12 +73,12 @@ def deleteFiles():
 	return '', 204
 
 @app.route('/camera/files/<file_name>',methods=['DELETE'])
-def deleteFile():
-	p = subprocess.run(['sudo', 'rm', '-rf', motion_folder+'/'+file_name])
+def deleteFile(file_name):
+	p = subprocess.run(['sudo', 'rm', '-f', motion_folder+'/'+file_name])
 	if p.returncode < 0:
                 raise Exception('Unable to delete file')
 	return '', 204
 
 if __name__ == '__main__':
 	print('Now listening on port {}'.format(port))
-	app.run(port=port, host = '0.0.0.0')
+	app.run(port=port, host = '0.0.0.0', threaded=True)
