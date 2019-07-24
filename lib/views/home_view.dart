@@ -1,7 +1,7 @@
 // import 'package:pi_spy/main.dart';
 
-import 'package:pi_spy/stream_view.dart';
-import 'package:pi_spy/camera_view.dart';
+import 'package:pi_spy/views/stream_view.dart';
+import 'package:pi_spy/views/camera_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeViewState extends State<HomeView>{

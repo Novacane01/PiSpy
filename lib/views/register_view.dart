@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pi_spy/home_view.dart';
+import 'package:pi_spy/views/home_view.dart';
 import 'package:pi_spy/main.dart' show secondaryColor;
 
 class RegisterViewState extends State<RegisterView>{

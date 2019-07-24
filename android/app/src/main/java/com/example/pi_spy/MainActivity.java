@@ -1,4 +1,4 @@
-package com.example.pi_spy;
+package com.nova.pi_spy;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

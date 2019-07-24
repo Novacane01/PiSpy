@@ -38,7 +38,7 @@ class StreamViewState extends State<StreamView>{
             return Container(
               child:WebView(
               javascriptMode: JavascriptMode.unrestricted,
-              initialUrl: 'http://192.168.0.26:7070/stream',
+              initialUrl: 'http://24.250.172.18:6890/stream',
               ),
             );
           }

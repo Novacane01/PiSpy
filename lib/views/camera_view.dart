@@ -13,6 +13,9 @@ class CameraState extends State<Camera>{
       setState(() {
         _isCameraEnabled = res.body == 'true';
       });
+    }).catchError((error){
+      _isCameraEnabled = false;
+      print(error);
     });
   }
 
@@ -21,8 +24,19 @@ class CameraState extends State<Camera>{
     print('Creating ListView');
     return camMenu(context);
   }
-  Future<http.Response> _updateCameraStatus(){
-    return http.post('http://192.168.0.26:7070/camera/${_isCameraEnabled ? 'enable':'disable'}');
+  Future<http.Response> _updateCameraStatus(newValue) async{
+    try{
+      setState(() {
+        _isCameraEnabled = newValue;
+      });
+      http.Response res = await http.post('http://24.250.172.18:6890/camera/${newValue ? 'enable':'disable'}');
+      return res;
+    }catch(e){
+      setState(() {
+        _isCameraEnabled = !newValue;
+      });
+      return Future.error(e);
+    }
   }
 
   Widget camMenu(BuildContext context){
@@ -39,10 +53,7 @@ class CameraState extends State<Camera>{
           trailing: Switch(
             value: _isCameraEnabled,
             onChanged: (bool newValue){
-              setState(() {
-                _isCameraEnabled = newValue;
-                _updateCameraStatus();
-              });
+              _updateCameraStatus(newValue);
             },
             activeColor: Colors.lightBlueAccent,
           ),
