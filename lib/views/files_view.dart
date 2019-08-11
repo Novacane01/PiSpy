@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pi_spy/main.dart';
 import 'package:video_player/video_player.dart';
-import 'package:pi_spy/file.dart';
+import 'package:pi_spy/helpers/file.dart';
 
 //VIEWING ALL FILES
 enum FileMode{
   VIEW, SELECT
 }
+
+Map<String,Future> _videoLoadFutures = new Map();
 
 class FilesViewState extends State<FilesView>{
   FileMode fileMode = FileMode.VIEW;
@@ -58,8 +60,8 @@ class FilesViewState extends State<FilesView>{
             onPressed: (){
               print('Files want to be deleted');
               setState(() {
-                for(File file in _selectedFiles){
-                  deleteFile(file);
+                for(File fileName in _selectedFiles){
+                  deleteFile(fileName);
                 }
               });
             },
@@ -68,22 +70,20 @@ class FilesViewState extends State<FilesView>{
       ),
       //ListView of files separated by dividers
       body: ListView.builder(
-        itemCount: (files[content]!=null)?files[content].length*2 + 1:0,
+        itemCount: (files!=null)?files.length*2 + 1:0,
         itemBuilder: (context, index){
           if(index%2==1){
-            File _currentFile = files[content].values.toList()[index~/2];
+            File _currentFile = files[index~/2];
             bool _selected = _selectedFiles.contains(_currentFile);
             return Ink(
               color: _selected ? secondaryColor : Colors.white,
               child: ListTile( //TODO: Come back and clean up maybe
-                title: Text(_currentFile.name),
+                title: Text(_currentFile.videoName),
                 leading: _selected ? Icon(Icons.check_circle) : null,
-                trailing:(content=='image')?
-                  ClipRRect(borderRadius: BorderRadius.circular(5.0),child:(_currentFile as Img).img):
-                  Container(child:ClipRRect(borderRadius: BorderRadius.circular(5.0),child:VideoPlayer((_currentFile as Vid).vid,)),width: 100.0,),
+                trailing: ClipRRect(borderRadius: BorderRadius.circular(5.0),child:_currentFile.image),
                 onTap: (){
                   if(fileMode == FileMode.VIEW){ //Open individual file view
-                    _showFile(files[content].values.toList()[index~/2]);
+                    _showFile(files[index~/2]);
                   }
                   else{ //Select/Deselect file
                     setState(() { 
@@ -102,7 +102,7 @@ class FilesViewState extends State<FilesView>{
                 onLongPress: (){
                   setState(() {
                     fileMode = FileMode.SELECT;
-                    print(_currentFile.name);
+                    print(_currentFile.videoName);
                    _selectedFiles.add(_currentFile);
                    print(_selectedFiles);
                   });
@@ -110,7 +110,7 @@ class FilesViewState extends State<FilesView>{
               )
             );
           }
-          else if(files[content].length>0){
+          else if(files.length>0){
             return Divider(height: 5.0,); //Retrurn a divider after every file entry
           }
           else{
@@ -135,42 +135,21 @@ class FilesView extends StatefulWidget{
 //VIEWING INDIVIDUAL FILES
 
 class FileViewState extends State<FileView>{
-  VideoPlayerController _controller;
   final File _currentFile;
   FileViewState(this._currentFile);
   bool _isFinished = false;
-  @override
-  void initState() {
-    print(_currentFile);
-    if(_currentFile.type=='video'){
-      _controller = (_currentFile as Vid).vid
-      ..addListener((){
-        final Duration position = _controller.value.position;
-        if(position >= _controller.value.duration && !_isFinished){
-          setState((){
-            _isFinished = true;
-          });
-        }
-        else if(_isFinished){
-          _isFinished = false;
-        }
-      });
-    }
-    super.initState();
-  }
+ 
   @override
   Widget build(BuildContext context){
     return WillPopScope(
       onWillPop: (){
         print('Back button was pressed!');
-        if(_currentFile.type=='video'){
-          (_currentFile as Vid).vid.pause();
-        }
+        _currentFile.video.pause();
         return Future.value(true);
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text(_currentFile.name),
+            title: Text(_currentFile.videoName),
             actions: <Widget>[ //Dropdown button to delete or save video to device
               DropdownButtonHideUnderline(
                 child: DropdownButton(
@@ -193,9 +172,15 @@ class FileViewState extends State<FileView>{
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              (_currentFile.type=='image')?(_currentFile as Img).img: AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller)),
+              (_currentFile.video==null)?_currentFile.image:FutureBuilder(
+                future: _videoLoadFutures[_currentFile.videoName],
+                builder: (context,snapshot){
+                  return AspectRatio(
+                    aspectRatio: _currentFile.video.value.aspectRatio,
+                    child: (snapshot.hasData)?VideoPlayer(_currentFile.video):CircularProgressIndicator(),
+                  );
+                }
+              ),
               ListTile(
                 title: Text('Name: '),
               ),
@@ -204,19 +189,43 @@ class FileViewState extends State<FileView>{
               ),
             ],
           ),
-          floatingActionButton: (_currentFile.type=='video')?FloatingActionButton(
+          floatingActionButton:FloatingActionButton(
             onPressed: (){
+              if(_currentFile.video==null){
+                _videoLoadFutures[_currentFile.videoName] = Future((){
+                  _currentFile.video = VideoPlayerController.network((mode=='development')?'http://24.250.168.190:6890/files/${_currentFile.videoName}':'http://192.168.1.8:7070/files/${_currentFile.videoName}');
+                  return _currentFile.video.initialize().then((value){
+                    _currentFile.video.addListener((){
+                      final Duration position = _currentFile.video.value.position;
+                      if(position >= _currentFile.video.value.duration && !_isFinished){
+                        setState(() {
+                          _isFinished = true;
+                        });
+                      }
+                      else if(_isFinished){
+                        _isFinished = false;
+                      }
+                    });
+                    setState(() {
+                      _currentFile.video.play();
+                    });
+                    return true;
+                  });
+                });
+              }
+              else{
+                (_currentFile.video.value.isPlaying) ? _currentFile.video.pause() :(_isFinished) ? _currentFile.video.initialize().then((val)=>_currentFile.video.play()): _currentFile.video.play(); //If the video has played all the wat through re-initialize it otherwise resume play if its pause and pause if its playing
+              }
               setState(() {
-               (_controller.value.isPlaying) ? _controller.pause() :(_isFinished) ? _controller.initialize().then((val)=>_controller.play()): _controller.play(); //If the video has played all the wat through re-initialize it otherwise resume play if its pause and pause if its playing
+                
               });
             },
             child: Icon(
-              (_controller.value.isPlaying)? Icons.pause:Icons.play_arrow,
+              (_currentFile.video!=null && _currentFile.video.value.isPlaying)?Icons.pause:Icons.play_arrow,
             ),
-          ):null,
+          ),
         ),
     );
-
   }
 }
 

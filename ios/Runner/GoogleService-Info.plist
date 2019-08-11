@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>326747550534-qt50arosm9etd9jf07lo8ehj81d8qqpc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.326747550534-qt50arosm9etd9jf07lo8ehj81d8qqpc</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>326747550534-befcfrrnlt5ru4qotg7q5747uq941lq4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAFFwlQ9yAaBQrhph53YO6DEBj4fqj76NI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>326747550534</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nova.piSpy</string>
+	<key>PROJECT_ID</key>
+	<string>pispy-ccee0</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pispy-ccee0.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:326747550534:ios:a8611cb963ef832b</string>
+	<key>DATABASE_URL</key>
+	<string>https://pispy-ccee0.firebaseio.com</string>
+</dict>
+</plist>

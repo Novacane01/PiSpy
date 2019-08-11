@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "326747550534",
+    "firebase_url": "https://pispy-ccee0.firebaseio.com",
+    "project_id": "pispy-ccee0",
+    "storage_bucket": "pispy-ccee0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326747550534:android:c13472e755b70b31",
+        "android_client_info": {
+          "package_name": "com.nova.pi_spy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326747550534-befcfrrnlt5ru4qotg7q5747uq941lq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nova.pi_spy",
+            "certificate_hash": "73880cb59c5074ce7f3690b08c529669dd35aae9"
+          }
+        },
+        {
+          "client_id": "326747550534-qe20ar7u2sf9mcb4q3qnlqktklo8deg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRKa5KrlnQXSv02xJ-3oWgs85f9DjxkX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326747550534-qe20ar7u2sf9mcb4q3qnlqktklo8deg4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "326747550534-qt50arosm9etd9jf07lo8ehj81d8qqpc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nova.piSpy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:pi_spy/file.dart';
+import 'package:pi_spy/helpers/file.dart';
 
 class CameraState extends State<Camera>{
   bool _isCameraEnabled = false;
@@ -29,7 +29,7 @@ class CameraState extends State<Camera>{
       setState(() {
         _isCameraEnabled = newValue;
       });
-      http.Response res = await http.post('http://24.250.172.18:6890/camera/${newValue ? 'enable':'disable'}');
+      http.Response res = await http.post((mode=='development')?'http://24.250.168.190:6890/file-names':'http://192.168.1.8:7070/camera/${newValue ? 'enable':'disable'}');
       return res;
     }catch(e){
       setState(() {
