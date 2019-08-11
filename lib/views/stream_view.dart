@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:pi_spy/file.dart';
+import 'package:pi_spy/helpers/file.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -38,7 +38,7 @@ class StreamViewState extends State<StreamView>{
             return Container(
               child:WebView(
               javascriptMode: JavascriptMode.unrestricted,
-              initialUrl: 'http://24.250.172.18:6890/stream',
+              initialUrl: (mode=='development')?'http://24.250.168.190:6890/stream':'http://192.168.1.8:7070/stream',
               ),
             );
           }
