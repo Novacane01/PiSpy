@@ -1,5 +1,5 @@
 # PiSpy
-PiSpy is a home sexurity app that uses a raspberry pi to monitor an environment.
+PiSpy is a home security app that uses a raspberry pi to monitor an environment.
 The app was created with Flutter using Dartlang and the server was created with Flask using python.
 
 ## How it works?
